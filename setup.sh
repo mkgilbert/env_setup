@@ -11,7 +11,7 @@ cat tmux.conf >> $HOME/.tmux.conf
 cat vimrc >> $HOME/.vimrc
 
 vim_version=$(vi --version|head -n 1 |awk '{print $5}')
-if [ bc <<< "$v < 7.4" ]; then 
+if [ bc <<< "$vim_version < 7.4" ]; then 
     echo "Error: Vim needs to be version 7.4 or greater. It is currently $vim_version" && exit 1; 
 fi
 
