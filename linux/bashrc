@@ -1,0 +1,5 @@
+
+# linux specific settings
+
+alias ls="ls --color"
+alias ll="ls -halt --color"
