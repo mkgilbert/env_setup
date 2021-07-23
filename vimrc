@@ -27,6 +27,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
+Plugin 'dense-analysis/ale'
 """"""""    end plugins   """"""""
 
 call vundle#end()		" required
