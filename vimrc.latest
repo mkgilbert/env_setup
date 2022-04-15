@@ -22,14 +22,14 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'	" Git from inside Vim
 Plugin 'plytophogy/vim-virtualenv'
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+"Plugin 'preservim/vim-markdown'
 Plugin 'kovetskiy/vim-bash'
 Plugin 'dense-analysis/ale'
 Plugin 'bling/vim-airline'  " Cool status bar
 
 " Python-specific plugins
 Plugin 'vim-scripts/indentpython.vim'
-"Plugin 'Valloric/YouCompleteMe'  " This seems to be broken
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 """"""""    end plugins   """"""""
@@ -60,18 +60,22 @@ syntax enable
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
 set termguicolors
-"let g:solarized_termcolors=256
+let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized8
-"set t_Co=256
-"colors zenburn
 " Fix tmux colors - This does *NOT* work!
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
+
+set expandtab
+set autoindent
+set tabstop=4
+set softtabstop=4
+set textwidth=110
 
 " Enable folding with the spacebar
 nnoremap <space> za
@@ -82,18 +86,15 @@ au BufNewFile,BufRead *.js, *.html, *.css:
     \ set softtabstop=2
     \ set shiftwidth=2
 
+" yaml and markdown
+au BufNewFile,BufRead *.yaml, *.yml, *.md:
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+
 """""""""""""""""""""""""""""""""""""""""""""
 " Python Settings
 """""""""""""""""""""""""""""""""""""""""""""
-" Python Indentation
-au BufNewFile,BufRead *.py:
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
 
 " Python Mark extra white space as bad
 highlight BadWhitespace ctermbg=red guibg=darkred

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-	echo "Must specify type of system (macos|linux). Exiting"
+	echo "Must specify type of system (osx|linux). Exiting"
 	exit 1
 fi
 
 sys=$1
 
-if [[ ! "$sys" =~ "macos" ]] && [[ ! "$sys" =~ "linux" ]]; then
-	echo "Must specify either 'macos' or 'linux'"
+if [[ ! "$sys" =~ "osx" ]] && [[ ! "$sys" =~ "linux" ]]; then
+	echo "Must specify either 'osx' or 'linux'"
 	exit 1
 fi
 	
