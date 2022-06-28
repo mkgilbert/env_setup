@@ -1,3 +1,4 @@
+""""" added by mkgilbert env_setup repo """""
 """""""""""""""""""""""""""""""""""""""""""""
 " Vundle Stuff
 """""""""""""""""""""""""""""""""""""""""""""
@@ -24,7 +25,7 @@ Plugin 'plytophogy/vim-virtualenv'
 
 " Python-specific plugins
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 """"""""    end plugins   """"""""

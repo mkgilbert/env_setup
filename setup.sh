@@ -18,11 +18,14 @@ fi
 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-cat bashrc >> $HOME/.bashrc
-cat tmux.conf >> $HOME/.tmux.conf
-cat vimrc >> $HOME/.vimrc
+for f in bashrc tmux.conf vimrc zshrc; do
+	if [ -f $HOME/.${f} ]; then
+		mv $HOME/.${f} $HOME/.${f}.original
+	fi
+	ln -s $(pwd)/${f} $HOME/.${f}
+done
 
-cat ${sys}/bashrc >> $HOME/.bashrc
+#cat ${sys}/bashrc >> $HOME/.bashrc
 
 vim_version=$(vi --version|head -n 1 |awk '{print $5}')
 if [ ! bc <<< "$vim_version > 7.4" ]; then 
