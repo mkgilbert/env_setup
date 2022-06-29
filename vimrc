@@ -78,18 +78,18 @@ au BufNewFile,BufRead *.js, *.html, *.css:
     \ set softtabstop=2
     \ set shiftwidth=2
 
+" Indentation
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=79
+set expandtab
+set autoindent
+set fileformat=unix
+
 """""""""""""""""""""""""""""""""""""""""""""
 " Python Settings
 """""""""""""""""""""""""""""""""""""""""""""
-" Python Indentation
-au BufNewFile,BufRead *.py:
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
 
 " Python Mark extra white space as bad
 highlight BadWhitespace ctermbg=red guibg=darkred
