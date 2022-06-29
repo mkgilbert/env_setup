@@ -16,16 +16,36 @@ if [ -e $HOME/.bash_profile ]; then
 	echo "case $- in *i*) . ~/.bashrc;; esac" >> $HOME/.bash_profile
 fi
 
-echo "Cloning Vundle"
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
+	echo "Cloning Vundle"
+	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
+
+echo "Determining version of tmux"
+if [[ (( $(tmux -V | cut -c 6-) < 2.1 )) ]]; then 
+	echo "Using old version of tmux"
+	tmux="tmux.conf.old"
+else
+	echo "Using newer tmux version"
+	tmux="tmux.conf"
+fi
 
 echo "Symlinking dotfiles"
-for f in bashrc tmux.conf vimrc zshrc; do
-	if [ -f $HOME/.${f} ]; then
-		echo "Found exisiting ${f}. Copying to ${HOME}/.${f}.original"
+for f in tmux.conf bashrc vimrc zshrc; do
+	dest=${HOME}/.${f}
+	if [ -L ${dest} ]; then
+		echo "Found exisiting symlinked ${f}. Skipping"
+		continue
+	fi
+	if [ -f ${dest} ]; then
+		echo "Moving to ${dest}.original"
 		mv $HOME/.${f} $HOME/.${f}.original
 	fi
-	ln -s $(pwd)/${f} $HOME/.${f}
+	if [ "${f}" -eq "tmux.conf" ]; then
+		ln -s $(pwd)/${tmux} ${dest}
+	else
+		ln -s $(pwd)/${f} $HOME/.${f}
+	fi
 done
 
 echo "Checking that Vim is version > 7.4"
@@ -36,10 +56,14 @@ fi
 
 echo "Checking for zsh"
 if [ $(which zsh) ]; then
-	echo "Found zsh. Installing oh-my-zsh"
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-	mkdir ~/.oh-my-zsh/custom/plugins
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	if [ -d ~/.oh-my-zsh ]; then
+		echo "oh-my-zsh is already installed. Skipping"
+	else
+		echo "Found zsh. Installing oh-my-zsh"
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+		mkdir ~/.oh-my-zsh/custom/plugins
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	fi
 fi
 
 echo "Done!"
