@@ -27,7 +27,8 @@ if [ $(which zsh) ]; then
 		echo "oh-my-zsh is already installed. Skipping"
 	else
 		echo "Found zsh. Installing oh-my-zsh"
-		sh -c "$(curl -fsSL https://raw.githubusercontent.com/mkgilbert/ohmyzsh/master/tools/install.sh)" "" --unattended
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        curl -fsSL https://raw.githubusercontent.com/mkgilbert/ohmyzsh/master/themes/mkgilbert.zsh-theme > ~/.oh-my-zsh/themes/mkgilbert.zsh-theme
 		mkdir ~/.oh-my-zsh/custom/plugins
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	fi
