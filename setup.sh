@@ -53,7 +53,7 @@ for f in tmux.conf bashrc vimrc zshrc; do
 		echo "Moving to ${dest}.original"
 		mv $HOME/.${f} $HOME/.${f}.original
 	fi
-	if [ "${f}" -eq "tmux.conf" ]; then
+	if [[ "${f}" =~ "tmux.conf" ]]; then
 		ln -s $(pwd)/${tmux} ${dest}
 	else
 		ln -s $(pwd)/${f} $HOME/.${f}
