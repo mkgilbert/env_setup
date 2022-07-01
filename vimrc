@@ -82,7 +82,7 @@ au BufNewFile,BufRead *.js, *.html, *.css:
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set textwidth=79
+set textwidth=120
 set expandtab
 set autoindent
 set fileformat=unix
@@ -90,7 +90,6 @@ set fileformat=unix
 """""""""""""""""""""""""""""""""""""""""""""
 " Python Settings
 """""""""""""""""""""""""""""""""""""""""""""
-
 " Python Mark extra white space as bad
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
