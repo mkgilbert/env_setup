@@ -1,5 +1,5 @@
-# mac-specific bash settings
 
+# mac specific settings
 # solarized colors for ls
 export LSCOLORS=exfxfeaeBxxehehbadacea
 
