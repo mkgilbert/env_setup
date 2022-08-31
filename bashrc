@@ -17,6 +17,15 @@ export TERM="xterm-256color"
 #alias tmux="TERMINFO=/usr/share/terminfo/x/xterm-16color TERM=xterm-16color tmux -2"
 alias vi="vim"
 
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 # Eternal bash history.
 # ---------------------
 # Undocumented feature which sets the size to "unlimited".
@@ -29,7 +38,13 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_eternal_history
 # Force prompt to write history after every command.
 # http://superuser.com/questions/20900/bash-history-loss
-PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+export ANSIBLE_NOCOWS=1
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+export EDITOR=vi
+
+# Rust
 . "$HOME/.cargo/env"
 
 # Custom Bashrc based on machine type
@@ -53,3 +68,9 @@ else
 fi
 # add the specific bashrc settings for the machine type
 source ${REPODIR}/${machine_type}/bashrc
+
+# switch to zsh if PIBS is being used to manage all user shells
+if [ "$SHELL" != "/usr/bin/zsh" ]; then
+    export SHELL="/usr/bin/zsh"
+    exec /usr/bin/zsh
+fi
