@@ -134,21 +134,21 @@ setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Custom Bashrc based on machine type
+# Custom zshrc based on machine type
 # -------------------------------------
 # First, figure out the real location of this script (in case it's a symlink)
 # credit: https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
-SOURCE=${BASH_SOURCE[0]}
+# credit for the SOURCE= part: https://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
+SOURCE=${(%):-%N}
 while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
     DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
-    SOURCE=$(readlink "$SOURCE")
+    SOURCE="$(readlink "$SOURCE")"
     [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
-
 # get the parent directory (this is the repo dir)
-REPODIR="$(dirname $SOURCE)"
+REPODIR="$( cd -P "$( dirname "$SOURCE" )" && pwd)"
 # determine what type of machine this is
-if [ "$(uname)" == "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
     machine_type="macos"
 else
     machine_type="linux"
