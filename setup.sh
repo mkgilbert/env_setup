@@ -44,7 +44,7 @@ else
 fi
 
 echo "Symlinking dotfiles"
-for f in tmux.conf bashrc vimrc zshrc; do
+for f in tmux.conf bashrc vimrc zshrc gitignore; do
 	dest=${HOME}/.${f}
 	if [ -L ${dest} ]; then
 		echo "Found exisiting symlinked ${f}. Skipping"
@@ -60,6 +60,9 @@ for f in tmux.conf bashrc vimrc zshrc; do
 		ln -s $(pwd)/${f} $HOME/.${f}
 	fi
 done
+
+echo "Setting git to use global gitignore file"
+git config --global core.excludesfile $HOME/.gitignore
 
 echo "Checking that Vim is version > 7.4"
 vim_version=$(vi --version|head -n 1 |awk '{print $5}')
