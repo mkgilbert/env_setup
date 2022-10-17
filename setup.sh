@@ -61,6 +61,22 @@ for f in tmux.conf bashrc vimrc zshrc gitignore; do
 	fi
 done
 
+if [[ "$sys" =~ "macos" ]]; then
+    echo "Symlinking hammerspoon config"
+    for f in $(ls $(pwd)/macos/hammerspoon/); do
+        dest=${HOME}/.hammerspoon/${f}
+        if [ -L ${dest} ]; then
+            echo "Found existing symlinked ${f}. Skipping"
+            continue
+        fi
+        if [ -f ${dest} ]; then
+            echo "Moving to ${dest}.original"
+            mv $HOME/.hammerspoon/${f} $HOME/.hammerspoon/${f}.original
+        fi
+        ln -s $(pwd)/macos/hammerspoon/${f} $HOME/.hammerspoon/${f}
+    done
+fi
+
 echo "Setting git to use global gitignore file"
 git config --global core.excludesfile $HOME/.gitignore
 
