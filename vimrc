@@ -22,6 +22,8 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'	" Git from inside Vim
 Plugin 'plytophogy/vim-virtualenv'
+Plugin 'godlygeek/tabular'
+Plugin 'preservim/vim-markdown'
 
 " Python-specific plugins
 Plugin 'vim-scripts/indentpython.vim'
