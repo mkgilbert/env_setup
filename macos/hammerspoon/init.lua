@@ -145,7 +145,7 @@ end
 
 function setUpClipboardTool()
   ClipboardTool = hs.loadSpoon('ClipboardTool')
-  ClipboardTool.show_in_menubar = false
+  ClipboardTool.show_in_menubar = true
   ClipboardTool:start()
   ClipboardTool:bindHotkeys({
     toggle_clipboard = {HYPER, "v"}
