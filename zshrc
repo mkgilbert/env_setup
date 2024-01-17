@@ -155,3 +155,8 @@ else
 fi
 # add the specific bashrc settings for the machine type
 source ${REPODIR}/${machine_type}/zshrc
+export VAULT_ADDR=https://zvault.zooxlabs.com
+# pyenv setup
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
