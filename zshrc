@@ -160,3 +160,6 @@ export VAULT_ADDR=https://zvault.zooxlabs.com
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# Allow hostlist formatting to work (`[` is seen as a glob in zsh)
+alias clush="noglob clush"
