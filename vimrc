@@ -102,3 +102,6 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 " Fix YouCompleteMe stuff
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" \D inserts date
+map <leader>D :put =strftime('%H:%M:%S')<CR>
