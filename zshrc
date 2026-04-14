@@ -2,6 +2,7 @@
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -79,7 +80,6 @@ plugins=(
 	colored-man-pages
 	jira
 	pep8
-	pyenv
 	salt
 	tig
 	vscode
@@ -155,11 +155,21 @@ else
 fi
 # add the specific bashrc settings for the machine type
 source ${REPODIR}/${machine_type}/zshrc
-export VAULT_ADDR=https://zvault.zooxlabs.com
 # pyenv setup
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+eval "$(pyenv init - --no-rehash)"
+
+export ANSIBLE_VAULT_PASSWORD_FILE=$HOME/.vault_pass
+export ANSIBLE_NOCOWS=1
 
 # Allow hostlist formatting to work (`[` is seen as a glob in zsh)
 alias clush="noglob clush"
+
+# claude code settings
+export NODE_EXTRA_CA_CERTS="/opt/homebrew/etc/ca-certificates/cert.pem"
+
+# Starship settings
+# NOTE: FOR SHELL STARTUP PERFORMANCE, MAKE SURE THIS LINE IS ALWAYS LAST
+eval "$(starship init zsh)"
+
