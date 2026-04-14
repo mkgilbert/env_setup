@@ -18,18 +18,28 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'lifepillar/vim-solarized8'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'scrooloose/nerdtree'
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'	" Git from inside Vim
 Plugin 'plytophogy/vim-virtualenv'
 Plugin 'godlygeek/tabular'
 Plugin 'preservim/vim-markdown'
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+Plugin 'bling/vim-airline'
 
 " Python-specific plugins
 Plugin 'vim-scripts/indentpython.vim'
 "Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
+
+" Rust plugins
+"Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+"Plugin 'rust-lang/rust.vim'
+
 """"""""    end plugins   """"""""
 
 call vundle#end()		" required
