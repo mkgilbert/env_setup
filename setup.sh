@@ -109,8 +109,12 @@ if [[ "$sys" =~ "macos" ]]; then
     done
 fi
 
-echo "Setting git to use global gitignore file"
-git config --global core.excludesfile $HOME/.gitignore
+if [ "$(git config --global core.excludesfile 2>/dev/null)" = "$HOME/.gitignore" ]; then
+	echo "git global excludesfile already set to $HOME/.gitignore. Skipping"
+else
+	echo "Setting git to use global gitignore file"
+	git config --global core.excludesfile $HOME/.gitignore
+fi
 
 echo "Checking that Vim is version > 7.4"
 vim_version=$(vi --version|head -n 1 |awk '{print $5}')
@@ -118,8 +122,10 @@ if [ "$(printf '%s\n' "$vim_version" "7.4" | sort -V | head -n 1)" = "$vim_versi
     echo "Error: Vim needs to be version 7.4 or greater. It is currently $vim_version" && exit 1
 fi
 
-echo "Installing Eternal Terminal (et)"
-if [[ "$sys" =~ "macos" ]]; then
+echo "Checking for Eternal Terminal (et)"
+if command -v et >/dev/null 2>&1; then
+	echo "et already installed: $(et --version 2>/dev/null || echo present). Skipping."
+elif [[ "$sys" =~ "macos" ]]; then
 	if command -v brew >/dev/null 2>&1; then
 		brew install et
 	else
