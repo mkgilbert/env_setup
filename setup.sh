@@ -149,6 +149,63 @@ elif [[ "$sys" =~ "linux" ]]; then
 	esac
 fi
 
+echo "Installing gsd-core (Git. Ship. Done.) for Claude Code"
+gsd_required_node_major=24
+gsd_node_major_version() {
+	node -v 2>/dev/null | sed -E 's/^v([0-9]+).*/\1/'
+}
+
+if command -v node >/dev/null 2>&1 && [ "$(gsd_node_major_version)" -ge "${gsd_required_node_major}" ] 2>/dev/null; then
+	echo "Found $(node -v). Skipping Node install."
+else
+	echo "Installing Node.js ${gsd_required_node_major}.x"
+	if [[ "$sys" =~ "macos" ]]; then
+		if command -v brew >/dev/null 2>&1; then
+			brew install node
+		else
+			echo "Homebrew not found. Install it, or install Node.js >= ${gsd_required_node_major} manually: https://nodejs.org/"
+		fi
+	elif [[ "$sys" =~ "linux" ]]; then
+		case "$distro_id" in
+			ubuntu|debian)
+				curl -fsSL "https://deb.nodesource.com/setup_${gsd_required_node_major}.x" | sudo -E bash -
+				sudo apt-get install -y nodejs
+				;;
+			*)
+				echo "Unrecognized Linux distro ('${distro_id:-unknown}', like '${distro_id_like:-unknown}')."
+				echo "Please install Node.js >= ${gsd_required_node_major} manually: https://nodejs.org/"
+				;;
+		esac
+	fi
+fi
+
+if command -v node >/dev/null 2>&1; then
+	echo "Node: $(node -v)"
+	echo "npm:  $(npm -v)"
+
+	npm_prefix=$(npm config get prefix 2>/dev/null)
+	gsd_npm_sudo=""
+	if [ -n "$npm_prefix" ] && [ ! -w "$npm_prefix" ]; then
+		gsd_npm_sudo="sudo"
+	fi
+
+	echo "Installing Claude Code CLI (if not already present)"
+	if ! command -v claude >/dev/null 2>&1; then
+		$gsd_npm_sudo npm install -g @anthropic-ai/claude-code
+	else
+		echo "claude CLI already installed: $(claude --version 2>/dev/null || echo present)"
+	fi
+
+	echo "Installing gsd-core for Claude Code (global)"
+	if [ -d "$HOME/.claude/gsd-core" ]; then
+		echo "gsd-core already installed at ~/.claude/gsd-core. Skipping."
+	else
+		$gsd_npm_sudo npx -y @opengsd/gsd-core@latest --claude --global
+	fi
+else
+	echo "Node.js not available. Skipping Claude Code CLI / gsd-core installation."
+fi
+
 echo "Done!"
 echo "Make sure to run :PluginInstall from inside vim!"
 exit 0

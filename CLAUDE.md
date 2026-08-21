@@ -18,6 +18,10 @@ build/test/lint tooling — changes are verified by sourcing the shell config or
    that's already a symlink; moves an existing real file aside to `.original` first).
 4. On macOS, also symlinks everything under `macos/hammerspoon/` to `~/.hammerspoon/`.
 5. Sets `git config --global core.excludesfile` to the symlinked `~/.gitignore`.
+6. Installs Eternal Terminal (`et`) via the OS-appropriate package manager.
+7. Installs Node.js >= 24 (via NodeSource on Ubuntu/Debian, Homebrew on macOS) if not already present, then
+   installs the `claude` CLI and `@opengsd/gsd-core` (Claude Code's "Git. Ship. Done." skill/command set) globally.
+   Skipped if `~/.claude/gsd-core` already exists.
 
 Re-running `setup.sh` is safe/idempotent for the symlink step; it will not clobber unrelated existing files.
 
