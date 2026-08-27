@@ -20,7 +20,7 @@ function setUpAppBindings()
   hyperFocusOrOpen('RETURN', 'iTerm2')
   --hyperFocusOrOpen('s', 'OmniFocus')
   --hyperFocus('f', 'Google Chrome', 'Firefox')
-  hyperFocusOrOpen('space', 'Visual Studio Code')
+  hyperFocusOrOpen('space', 'Cursor')
 end
 
 -- Window management

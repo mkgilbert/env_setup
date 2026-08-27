@@ -155,6 +155,49 @@ elif [[ "$sys" =~ "linux" ]]; then
 	esac
 fi
 
+echo "Checking for Rust"
+if command -v cargo >/dev/null 2>&1; then
+	echo "cargo already installed: $(cargo --version 2>/dev/null || echo present). Skipping rustup install."
+else
+	if [[ "$sys" =~ "macos" ]]; then
+		xcode-select --install 2>/dev/null || true
+	fi
+	echo "Installing Rust via rustup"
+	curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
+fi
+
+if [ -f "$HOME/.cargo/env" ]; then
+	. "$HOME/.cargo/env"
+fi
+
+if command -v cargo >/dev/null 2>&1; then
+	echo "Checking for cargo-binstall"
+	if command -v cargo-binstall >/dev/null 2>&1; then
+		echo "cargo-binstall already installed. Skipping"
+	else
+		echo "Installing cargo-binstall"
+		cargo install cargo-binstall
+	fi
+
+	echo "Checking for fd-find"
+	if command -v fd >/dev/null 2>&1; then
+		echo "fd-find already installed. Skipping"
+	else
+		echo "Installing fd-find via cargo-binstall"
+		cargo binstall --disable-telemetry --no-confirm fd-find
+	fi
+
+	echo "Checking for ripgrep"
+	if command -v rg >/dev/null 2>&1; then
+		echo "ripgrep already installed. Skipping"
+	else
+		echo "Installing ripgrep via cargo-binstall"
+		cargo binstall --disable-telemetry --no-confirm ripgrep
+	fi
+else
+	echo "cargo not available. Skipping cargo-binstall / fd-find installation."
+fi
+
 echo "Installing gsd-core (Git. Ship. Done.) for Claude Code"
 gsd_required_node_major=24
 gsd_node_major_version() {
