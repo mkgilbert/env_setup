@@ -1,0 +1,22 @@
+name = "SSH Servers"
+description = "sun-nvme30-0001 on the left, sun-q007-c/d stacked on the right"
+working_dir = "~"
+
+[[tabs]]
+name = "servers"
+
+[[tabs.panes]]
+label = "nvme30-0001"
+command = "ssh sun-nvme30-0001"
+ratio = 0.5
+
+[[tabs.panes]]
+label = "q007-c"
+command = "ssh sun-q007-c"
+split = "right"
+ratio = 0.5
+
+[[tabs.panes]]
+label = "q007-d"
+command = "ssh sun-q007-d"
+split = "down"

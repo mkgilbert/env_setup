@@ -24,6 +24,15 @@ build/test/lint tooling — changes are verified by sourcing the shell config or
 8. Installs Node.js >= 24 (via NodeSource on Ubuntu/Debian, Homebrew on macOS) if not already present, then
    installs the `claude` CLI and `@opengsd/gsd-core` (Claude Code's "Git. Ship. Done." skill/command set) globally.
    Skipped if `~/.claude/gsd-core` already exists.
+9. Installs `herdr` (skipped if already on `PATH`) — on macOS via Homebrew, including a fixup for herdr's
+   background `brew services` launchd agent, which doesn't inherit Homebrew's `PATH` by default and so
+   can't find `node`/`python`/etc. when plugins shell out to them. Linux has no automatic install path yet
+   and just prints manual install instructions. Then symlinks `config/herdr/config.toml` to
+   `~/.config/herdr/config.toml` and `config/herdr/plugins/cloudmanic.herdr-plus/` to
+   `~/.config/herdr/plugins/config/cloudmanic.herdr-plus` (same skip-if-symlinked /
+   move-existing-to-`.original` behavior as the other symlink steps), then installs herdr's plugins
+   (`herdr plugin install <owner>/<repo>`, skipped per-plugin if already listed by `herdr plugin list`)
+   — this step no-ops if `herdr` isn't on `PATH`.
 
 Re-running `setup.sh` is safe/idempotent for the symlink step; it will not clobber unrelated existing files.
 
@@ -53,4 +62,5 @@ unrelated to the Vundle plugin list and only needed if the system vim is too old
 ## Adding a new dotfile to be symlinked
 
 If you add a new file that should be installed to `$HOME`, add it to the `for f in ...` loop in `setup.sh` — files
-aren't auto-discovered.
+aren't auto-discovered. Nested-directory configs (e.g. `macos/hammerspoon/`, `config/herdr/`) instead get their own
+dedicated symlink block in `setup.sh`, following the same skip-if-symlinked / move-existing-to-`.original` pattern.

@@ -109,6 +109,73 @@ if [[ "$sys" =~ "macos" ]]; then
     done
 fi
 
+echo "Checking for herdr"
+if command -v herdr >/dev/null 2>&1; then
+	echo "herdr already installed: $(herdr --version 2>/dev/null || echo present). Skipping."
+elif [[ "$sys" =~ "macos" ]]; then
+	if command -v brew >/dev/null 2>&1; then
+		echo "Installing herdr via Homebrew"
+		brew install herdr
+		# launchd agents don't inherit Homebrew's PATH by default, so herdr's background
+		# service can't find node/python/etc. when running plugins that shell out to them
+		# (ENOENT). Generate the service plist, stop it, patch in a full PATH, then restart.
+		echo "Fixing herdr's Homebrew background service PATH"
+		brew services start herdr
+		sleep 1
+		brew services stop herdr
+		herdr_plist="$HOME/Library/LaunchAgents/sh.brew.herdr.plist"
+		if [ -f "$herdr_plist" ] && ! /usr/libexec/PlistBuddy -c "Print :EnvironmentVariables:PATH" "$herdr_plist" &>/dev/null; then
+			/usr/libexec/PlistBuddy -c "Add :EnvironmentVariables dict" "$herdr_plist"
+			/usr/libexec/PlistBuddy -c "Add :EnvironmentVariables:PATH string /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" "$herdr_plist"
+		fi
+		brew services start herdr
+	else
+		echo "Homebrew not found. Install it, or install herdr manually: https://herdr.dev"
+	fi
+else
+	echo "Automatic herdr install is only wired up for macOS. Install it manually: https://herdr.dev"
+fi
+
+echo "Symlinking herdr config"
+mkdir -p "$HOME/.config/herdr"
+dest="$HOME/.config/herdr/config.toml"
+if [ -L "${dest}" ]; then
+	echo "Found existing symlinked config.toml. Skipping"
+elif [ -f "${dest}" ]; then
+	echo "Moving to ${dest}.original"
+	mv "${dest}" "${dest}.original"
+	ln -s "$(pwd)/config/herdr/config.toml" "${dest}"
+else
+	ln -s "$(pwd)/config/herdr/config.toml" "${dest}"
+fi
+
+echo "Symlinking herdr-plus plugin config"
+mkdir -p "$HOME/.config/herdr/plugins/config"
+dest="$HOME/.config/herdr/plugins/config/cloudmanic.herdr-plus"
+if [ -L "${dest}" ]; then
+	echo "Found existing symlinked cloudmanic.herdr-plus config. Skipping"
+elif [ -e "${dest}" ]; then
+	echo "Moving to ${dest}.original"
+	mv "${dest}" "${dest}.original"
+	ln -s "$(pwd)/config/herdr/plugins/cloudmanic.herdr-plus" "${dest}"
+else
+	ln -s "$(pwd)/config/herdr/plugins/cloudmanic.herdr-plus" "${dest}"
+fi
+
+echo "Checking for herdr plugins"
+if command -v herdr >/dev/null 2>&1; then
+	for plugin in cloudmanic/herdr-plus qu8n/herdr-automatic-rename hhdebb/herdr-radar persiyanov/herdr-reviewr; do
+		if herdr plugin list 2>/dev/null | grep -q "github:${plugin}@"; then
+			echo "herdr plugin ${plugin} already installed. Skipping"
+		else
+			echo "Installing herdr plugin ${plugin}"
+			herdr plugin install "${plugin}"
+		fi
+	done
+else
+	echo "herdr not installed. Skipping plugin install."
+fi
+
 if [ "$(git config --global core.excludesfile 2>/dev/null)" = "$HOME/.gitignore" ]; then
 	echo "git global excludesfile already set to $HOME/.gitignore. Skipping"
 else
