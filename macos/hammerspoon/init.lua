@@ -8,7 +8,7 @@ HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
 -- App bindings
 function setUpAppBindings()
   --hyperFocusAll('w', 'React Native Debugger', 'Simulator', 'qemu-system-x86_64')
-  hyperFocusOrOpen('e', 'emacs')
+  hyperFocusOrOpen('e', 'Obsidian')
   hyperFocus('i', 'Google Chrome')
   hyperFocusOrOpen('a', 'Finder')
   hyperFocusOrOpen('c', 'Calendar')
