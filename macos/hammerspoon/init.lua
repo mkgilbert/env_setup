@@ -144,6 +144,7 @@ function maybeEnableDebug()
 end
 
 function setUpClipboardTool()
+setUpQuickNote()
   ClipboardTool = hs.loadSpoon('ClipboardTool')
   ClipboardTool.show_in_menubar = true
   ClipboardTool:start()
@@ -152,9 +153,12 @@ function setUpClipboardTool()
   })
 end
 
+require('quicknote')
+
 -- Main
 
 maybeEnableDebug()
 setUpAppBindings()
 setUpWindowManagement()
 setUpClipboardTool()
+setUpQuickNote()
